@@ -26,6 +26,11 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation('org.springframework.boot:spring-boot-starter-mustache')
+
+	/* security */
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
 }
 
 tasks.named('test') {

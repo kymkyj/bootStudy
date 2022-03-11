@@ -25,6 +25,12 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes){
+        if("kakao".equals(registrationId)){
+            return ofKakao("id", attributes);
+        }
+        if("naver".equals(registrationId)){
+            return ofNaver("id", attributes);
+        }
         return ofGoogle(userNameAttributeName, attributes);
     }
 
@@ -33,6 +39,33 @@ public class OAuthAttributes {
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
                 .picture((String) attributes.get("picture"))
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+    }
+
+    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes){
+        Map<String, Object> naverAccount = (Map<String, Object>) attributes.get("naverAccount");
+
+        return OAuthAttributes.builder()
+                .name((String) naverAccount.get("name"))
+                .email((String) naverAccount.get("email"))
+                .picture((String) naverAccount.get("profile_image"))
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+    }
+
+    private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes){
+        // 카카오는 kakao_account에 유저정보가 있음
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+        // kakao_account 안에 또 profile이라는 JSON 객체가 이어서 존재함 (nickname, profile_image)
+        Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
+
+        return OAuthAttributes.builder()
+                .name((String) kakaoProfile.get("nickname"))
+                .email((String) kakaoAccount.get("email"))
+                .picture((String) kakaoProfile.get("profile_image_url"))
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .build();

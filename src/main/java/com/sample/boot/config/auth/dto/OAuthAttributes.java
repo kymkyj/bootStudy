@@ -25,9 +25,9 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes){
-        if("kakao".equals(registrationId)){
-            return ofKakao("id", attributes);
-        }
+//        if("kakao".equals(registrationId)){
+//            return ofKakao("id", attributes);
+//        }
         if("naver".equals(registrationId)){
             return ofNaver("id", attributes);
         }
@@ -56,20 +56,20 @@ public class OAuthAttributes {
                 .build();
     }
 
-    private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes){
-        // 카카오는 kakao_account에 유저정보가 있음
-        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-        // kakao_account 안에 또 profile이라는 JSON 객체가 이어서 존재함 (nickname, profile_image)
-        Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
-
-        return OAuthAttributes.builder()
-                .name((String) kakaoProfile.get("nickname"))
-                .email((String) kakaoAccount.get("email"))
-                .picture((String) kakaoProfile.get("profile_image_url"))
-                .attributes(attributes)
-                .nameAttributeKey(userNameAttributeName)
-                .build();
-    }
+//    private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes){
+//        // 카카오는 kakao_account에 유저정보가 있음
+//        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+//        // kakao_account 안에 또 profile이라는 JSON 객체가 이어서 존재함 (nickname, profile_image)
+//        Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
+//
+//        return OAuthAttributes.builder()
+//                .name((String) kakaoProfile.get("nickname"))
+//                .email((String) kakaoAccount.get("email"))
+//                .picture((String) kakaoProfile.get("profile_image_url"))
+//                .attributes(attributes)
+//                .nameAttributeKey(userNameAttributeName)
+//                .build();
+//    }
 
     public User toEntity(){
         return User.builder()
